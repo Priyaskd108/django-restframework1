@@ -3,45 +3,13 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
-from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.validators import ValidationError
+from rest_framework import viewsets, status
 
 from e_commerce.models import Comic
 
-def comic_list_filtered_api_view(request):
-    if request.method == 'GET':
-        _queryset = Comic.objects.filter(price=5.00)
-        _data = list(_queryset.values()) if _queryset.exists() else []
-        return JsonResponse(data=_data, safe=False, status=200)
-    else:
-        return JsonResponse(
-            data={"message": "Método HTTP no permitido."},
-            status=405
-        )
-def comic_list_filtered_qaty_api_view(request):
-    if request.method == 'GET':
-        _queryset = Comic.objects.filter(stock_qty=10)
-        _data = list(_queryset.values()) if _queryset.exists() else []
-        return JsonResponse(data=_data, safe=False, status=200)
-    else:
-        return JsonResponse(
-            data={"message": "Método HTTP no permitido."},
-            status=405
-        )
-
-
-def comic_list_filtered_api_view(request):
-    if request.method == 'GET':
-        _queryset = Comic.objects.filter(price=5.00)
-        _data = list(_queryset.values()) if _queryset.exists() else []
-        return JsonResponse(data=_data, safe=False, status=200)
-    else:
-        return JsonResponse(
-            data={"message": "Método HTTP no permitido."},
-            status=405
-        )
 
 def comic_retrieve_api_view(request):
     if request.method == 'GET':
@@ -98,8 +66,6 @@ def comic_create_api_view(request):
             data={"message": "Método HTTP no permitido."},
             status=405
         )
-
-
 
 
 # NOTE: Ahora comenzamos usando DRF:
