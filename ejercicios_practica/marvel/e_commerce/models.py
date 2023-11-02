@@ -29,8 +29,7 @@ class Comic(models.Model):
 
     class Meta:
         '''
-        Con "class Meta" podemos definir atributos de nuestras entidades
-        como el nombre de la tabla.
+        Con "class Meta" podemos definir atributos de nuestras entidades como el nombre de la tabla.
         '''
         db_table = 'e_commerce_comics'
         verbose_name = 'comic'
@@ -41,8 +40,7 @@ class Comic(models.Model):
         La función __str__ cumple una función parecida a __repr__ en SQL Alchemy, 
         es lo que retorna cuando llamamos al objeto.
         '''
-        return f'{self.id} - {self.title}'
-
+        return f'{self.id}'
 
 class WishList(models.Model):
     id = models.BigAutoField(db_column='ID', primary_key=True)
