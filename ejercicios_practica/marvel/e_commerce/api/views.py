@@ -10,25 +10,38 @@ from rest_framework.validators import ValidationError
 
 from e_commerce.models import Comic
 
-from django.views.decorators.http import require_GET, require_POST
-
-@require_GET
-def vista_api_get(request):
-    print("Esta es la vista GET")
-    return JsonResponse({"mensaje": "Esta es la vista GET"})
-
-@require_POST
-def vista_api_post(request):
-    print("Esta es la vista POST")
-    return JsonResponse({"mensaje": "Esta es la vista POST"})
-
-def vista_api_get_post(request):
+def comic_list_filtered_api_view(request):
     if request.method == 'GET':
-        print("Esta es la vista GET/POST con método GET")
-        return JsonResponse({"mensaje": "Esta es la vista GET/POST con método GET"})
-    elif request.method == 'POST':
-        print("Esta es la vista GET/POST con método POST")
-        return JsonResponse({"mensaje": "Esta es la vista GET/POST con método POST"})
+        _queryset = Comic.objects.filter(price=5.00)
+        _data = list(_queryset.values()) if _queryset.exists() else []
+        return JsonResponse(data=_data, safe=False, status=200)
+    else:
+        return JsonResponse(
+            data={"message": "Método HTTP no permitido."},
+            status=405
+        )
+def comic_list_filtered_qaty_api_view(request):
+    if request.method == 'GET':
+        _queryset = Comic.objects.filter(stock_qty=10)
+        _data = list(_queryset.values()) if _queryset.exists() else []
+        return JsonResponse(data=_data, safe=False, status=200)
+    else:
+        return JsonResponse(
+            data={"message": "Método HTTP no permitido."},
+            status=405
+        )
+
+
+def comic_list_filtered_api_view(request):
+    if request.method == 'GET':
+        _queryset = Comic.objects.filter(price=5.00)
+        _data = list(_queryset.values()) if _queryset.exists() else []
+        return JsonResponse(data=_data, safe=False, status=200)
+    else:
+        return JsonResponse(
+            data={"message": "Método HTTP no permitido."},
+            status=405
+        )
 
 def comic_retrieve_api_view(request):
     if request.method == 'GET':
@@ -85,6 +98,8 @@ def comic_create_api_view(request):
             data={"message": "Método HTTP no permitido."},
             status=405
         )
+
+
 
 
 # NOTE: Ahora comenzamos usando DRF:

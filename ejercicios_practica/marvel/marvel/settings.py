@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,7 +42,7 @@ BASE_APPS = [
 
 # Acá van las apps de 3ros que necesitamos agregar
 # para que Django las encuentre.
-THIRD_APPS = ['rest_framework']
+THIRD_APPS = []
 
 # Acá van las apps que creamos nosotros.
 LOCAL_APPS = ['e_commerce']
@@ -93,34 +93,37 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'marvel.wsgi.application'
 
-# NOTE: Configuración general para DRF.
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-    ]
-}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+if os.getenv("DB_ENGINE") == "POSTGRES":
 
-# NOTE: Reemplazamos la configuración inicial de base de datos para trabajar con Postgres:
-# Recordemos:
-    #   POSTGRES_DB: marvel_db
-    #   POSTGRES_USER: inove_user
-    #   POSTGRES_PASSWORD: 123Marvel!
+    # NOTE: Reemplazamos la configuración inicial de base de datos para trabajar con Postgres:
+    # Recordemos:
+        #   POSTGRES_DB: marvel_db
+        #   POSTGRES_USER: inove_user
+        #   POSTGRES_PASSWORD: 123Marvel!
 
-DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2' --> En desuso.
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'marvel_db',        # POSTGRES_DB
-        'USER' : 'inove_user',      # POSTGRES_USER
-        'PASSWORD' : '123Marvel!',  # POSTGRES_PASSWORD
-        'HOST':'db',                # Nombre del servicio
-        'PORT': '5432'              # Número del puerto
+    DATABASES = {
+        'default': {
+            # 'ENGINE': 'django.db.backends.postgresql_psycopg2' --> En desuso.
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'marvel_db',        # POSTGRES_DB
+            'USER' : 'inove_user',      # POSTGRES_USER
+            'PASSWORD' : '123Marvel!',  # POSTGRES_PASSWORD
+            'HOST':'db',                # Nombre del servicio
+            'PORT': '5432'              # Número del puerto
+        }
     }
-}
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -164,12 +167,3 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# NOTE: Para debug
-
-# Color en los prints:
-# Modo de uso: print(VERDE+"mi texto")
-
-AMARILLO = "\033[;33m"
-CIAN = "\033[;36m"
-VERDE = "\033[;32m"
